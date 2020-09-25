@@ -2,9 +2,7 @@ const { Router } = require('express');
 const { route } = require('../app');
 const router = Router();
 const bodyParser = require('body-parser');
-
 const User = require('../models/Alert');
-
 const faker = require('faker');
 const app = require('../app');
 const Alert = require('../models/Alert');
