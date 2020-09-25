@@ -12,27 +12,14 @@ const app = require('../app');
 router.get('/api/user', async (req, res) => {
     const users = await User.find();
     res.json({ users }).status(200);
-    if(users == null){
+    if (users == null) {
         res.send('No exiten usuarios').status(404);
     }
 });
 
-//Buscar un Usuario por su id
-router.get("/api/user/:id", async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id);
-        res.json(user);
-        if (!user) {
-            res.send('El usuario no existe').status(400);
-        }
-    } catch {
-        res.status(400).send(result.error.details.message);
-    }
-});
 
-
-//Crear 5 usuarios ficticios (Al parecer ahora no funciona no se porque)
-/*router.get('/api/user/faker', async (req, res) => {
+//Crear 5 usuarios ficticios
+router.get('/api/user/faker', async (req, res) => {
     try{
         for (let i = 0; i < 5; i++) {
             await User.create({
@@ -45,9 +32,24 @@ router.get("/api/user/:id", async (req, res) => {
         }
         res.json({ message: '5 Usuarios creados' }).status(201);
     }catch{
-        res.status(400).json('Creacion de usuario fallida');
+        res.status(400).send('Error faker');
     }
-});*/
+});
+
+
+//Buscar un Usuario por su id
+router.get("/api/user/:id", async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        res.json(user);
+        if (!user) {
+            res.send('El usuario no existe').status(400);
+        }
+    } catch {
+        res.status(400).send('Error');
+    }
+});
+
 
 //Crear un usuario ingresando datos
 router.post('/api/user/', async (req, res) => {
@@ -72,15 +74,15 @@ router.post('/api/user/', async (req, res) => {
 router.patch("/api/user/:id", async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
-        if(req.body.nombres){
+        if (req.body.nombres) {
             user.nombres = req.body.nombres;
-        }if(req.body.apellidos){
+        } if (req.body.apellidos) {
             user.apellidos = req.body.apellidos;
-        }if(req.body.avatar){
+        } if (req.body.avatar) {
             user.avatar = req.body.avatar;
-        }if(req.body.correo){
+        } if (req.body.correo) {
             user.correo = req.body.correo;
-        }if(req.body.password){
+        } if (req.body.password) {
             user.password = req.body.password;
         }
         const updateUser = await user.save();
@@ -93,7 +95,7 @@ router.patch("/api/user/:id", async (req, res) => {
 //Eliminar Usuario
 router.delete("/api/user/:id", async (req, res) => {
     try {
-        const removedUser = await User.remove({ _id: req.params.id });
+        const removedUser = await User.deleteOne({ _id: req.params.id });
         res.json({ message: 'Usuario eliminado' });
     } catch {
         res.status(404)

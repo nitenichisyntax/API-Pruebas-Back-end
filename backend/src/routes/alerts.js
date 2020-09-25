@@ -19,6 +19,27 @@ router.get('/api/alert', async (req, res) => {
 });
 
 
+//Crear 5 alertas ficticias
+router.get('/api/alert/faker', async (req, res) => {
+    try{
+        for (let i = 0; i < 5; i++) {
+            await Alert.create({
+                latitud: faker.address.latitude(),
+                longitud: faker.address.longitude(),
+                foto: faker.image.nature(),
+                fecha: Date.now(),
+                descripcion: faker.lorem.sentence(),
+                tipo: faker.helpers.randomize(),
+                nivel: faker.helpers.randomize()
+            });
+        }
+        res.json({ message: '5 alertas creados' }).status(201);
+    }catch{
+        res.status(500).send('Error faker');
+    }
+});
+
+
 //Buscar un Alerta por su id
 router.get("/api/alert/:id", async (req, res) => {
     try {
@@ -28,30 +49,9 @@ router.get("/api/alert/:id", async (req, res) => {
             res.send('La alerta no existe').status(400);
         }
     } catch {
-        res.status(500).send(result.error.details.message);
+        res.status(500).send('Error');
     }
 });
-
-
-//Crear 5 alertas ficticias (Al parecer ahora no funciona no se porque)
-/*router.get('/api/alert/faker', async (req, res) => {
-    try {
-        for (let i = 0; i < 5; i++) {
-            await Alert.create({
-                latitud: 609.691236,
-                longitud: 408.12312,
-                foto: faker.image.nature(),
-                fecha: Date.now(),
-                descripcion: faker.lorem.sentence(),
-                tipo: faker.helpers.randomize(),
-                nivel: faker.helpers.randomize()
-            });
-        }
-        res.json({ message: '5 alertas creados' }).status(201);
-    } catch {
-        res.status(404).json('Creacion de alerta fallida');
-    }
-});*/
 
 
 //Crear una Alerta ingresando datos
@@ -102,7 +102,7 @@ router.patch("/api/alert/:id", async (req, res) => {
 //Eliminar Alerta
 router.delete("/api/alert/:id", async (req, res) => {
     try {
-        const removedalert = await Alert.remove({ _id: req.params.id });
+        const removedalert = await Alert.deleteOne({ _id: req.params.id });
         res.json({ message: 'Alerta eliminada' });
     } catch {
         res.json({ error: "Error" }).status(404);
