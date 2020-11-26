@@ -1,0 +1,16 @@
+------Iniciar GpsBD user root------
+ssh root@143.110.154.244 
+Pass: Musashi666
+
+-----Entrar con mi usuario-----
+ssh matahachi666@143.110.154.244
+pass: Claudiocepg123
+
+--------MongoDB---------
+user: matahachi
+pass: Claudiocepg123
+
+----Entrar MongoDB---------
+mongo -u matahachi -p --authenticationDatabase admin
+pass: Claudiocepg123
+
