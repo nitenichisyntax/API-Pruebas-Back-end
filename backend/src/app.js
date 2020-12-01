@@ -14,4 +14,7 @@ app.use(require('./routes/alerts'));
 app.use(require('./routes/task'));
 
 app.use(require('./routes/cliente'));
+
+app.use(require('./routes/cotizacion'));
+
 module.exports = app;
